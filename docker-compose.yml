@@ -19,7 +19,7 @@ services:
     volumes:
       - ./configs/fakeAuthGateway/nginx-conf.conf:/etc/nginx/nginx.conf:ro
   ChatService:
-    image: nginx:1.25.3
+    image: ${CHATSERVICE_IMAGE}
     container_name: chatService
     networks:
       - szachmatyNet-backend
