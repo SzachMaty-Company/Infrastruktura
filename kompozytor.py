@@ -3,14 +3,12 @@ import re
 import sys 
 import requests
 
-URLs = ["https://api.github.com/repos/kwiaczek/testrepo/releases/latest"]
+URLs = ["https://api.github.com/repos/SzachMaty-Company/Frontend/releases/latest"]
 IMAGE_DIR = "images/"
 
 
-def error(text):
-    sys.stderr.write('Jestem zniesmaczony twoja osoba.\n')
-    sys.stderr.write(f"{text} \n")
-
+def error(text):    
+    sys.stderr.write(f'Jestem zniesmaczony twoja osoba. {text}\n')
 
 def getResponse(URL, authToken):
     headers = {
@@ -22,6 +20,8 @@ def getResponse(URL, authToken):
 
     if resp.status_code == 200:
         return resp
+    elif resp.status_code == 401:
+        error("jestes nie powazny, token jest nie prawidlowy. Powinien wygladac: ghp_***********")
 
 def getUrlAndNameForDockerImageFileFromResponse(resp):
     try:
