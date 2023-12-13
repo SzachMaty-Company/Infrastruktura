@@ -5,10 +5,12 @@ import requests
 
 URLs = ["https://api.github.com/repos/SzachMaty-Company/Frontend/releases/latest"]
 IMAGE_DIR = "images/"
-
+TEMPLATE_PATH = "templ-docker-compose.yml"
+OUTPUT_PATH = "docker-compose.yml"
 
 def error(text):    
     sys.stderr.write(f'Jestem zniesmaczony twoja osoba. {text}\n')
+    exit(1)
 
 def getResponse(URL, authToken):
     headers = {
@@ -21,7 +23,7 @@ def getResponse(URL, authToken):
     if resp.status_code == 200:
         return resp
     elif resp.status_code == 401:
-        error("jestes nie powazny, token jest nie prawidlowy. Powinien wygladac: ghp_***********")
+        error("jestes nie powazny, token jest nie prawidlowy, myslales, ze sie nie skapne?. Powinien wygladac: ghp_***********")
 
 def getUrlAndNameForDockerImageFileFromResponse(resp):
     try:
@@ -45,7 +47,7 @@ def getImageFromUrl(url, fileName, authToken):
                     file.write(chunk)
             return filePath
         else:
-            raise Exception(f"Failed to download '{url}'. Status code: {response.status_code}")
+            raise Exception(f"Wywalilo sie z rowerka '{url}'. Status code: {response.status_code}")
 
 def downloadImage(url):
     try:
@@ -54,19 +56,17 @@ def downloadImage(url):
         return getImageFromUrl(urlDockerImage, nameDockerImage, token)
     except Exception as e:
         error(e)
-        return None
-    
+
 def findInFileAndReplace(file, name, ver):
     pattern = rf'{name}:\d+(\.\d+)+'
     replacement = f"{name}:{ver}"
     return re.sub(pattern, replacement, file)
     
-
 if __name__ == "__main__":
 
     token = os.environ.get('SZACHMATY_GIT_TOKEN')
     if token == None:
-        error("Nie ustawiles zmiennej srodowiskowej SZACHMATY_GIT_TOKEN.")
+        error("Nie ustawiles zmiennej srodowiskowej SZACHMATY_GIT_TOKEN!")
         exit(1)
 
     if not os.path.exists(IMAGE_DIR):
@@ -90,9 +90,12 @@ if __name__ == "__main__":
         os.system(f"docker load --input {imagePath}")
         images.append((name, ver))
 
-    resultingDockerCompose = open("docker-compose.yml").read()
+    resultingDockerCompose = open(TEMPLATE_PATH).read()
     for name, ver in images:
         print(name, ver)
         resultingDockerCompose = findInFileAndReplace(resultingDockerCompose, name, ver)
-    print(resultingDockerCompose)
 
+    open(OUTPUT_PATH, "w").write(resultingDockerCompose)
+
+    print("Gratulacje użytkowniku!")
+    print("teraz docker compose up i do przodu!")
