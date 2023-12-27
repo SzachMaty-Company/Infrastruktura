@@ -1,3 +1,7 @@
+# Link do tokenu:
+```
+https://github.com/settings/tokens
+```
 # Jeśli nie słuchałeś na lekcjach najstraszego magistra inżyniera i nie wiesz jak ustawić zmienną środowiskową to: 
 ## Windows
 ```
