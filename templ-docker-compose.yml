@@ -1,7 +1,7 @@
 version: '3'
 services:
   Frontend:
-    image: szachmatyfrontendimage:1.1.1
+    image: szachmatyfrontendimage:9.9.9
     container_name: frontend
     ports:
       - "8080:80"
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./configs/fakeAuthGateway/nginx-conf.conf:/etc/nginx/nginx.conf:ro
   ChatService:
-    image: ${CHATSERVICE_IMAGE}
+    image: szachmatychatserviceimage:9.9.9
     container_name: chatService
     networks:
       - szachmatyNet-backend

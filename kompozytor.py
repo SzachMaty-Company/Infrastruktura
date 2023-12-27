@@ -3,7 +3,10 @@ import re
 import sys 
 import requests
 
-URLs = ["https://api.github.com/repos/SzachMaty-Company/Frontend/releases/latest"]
+URLs = [
+    "https://api.github.com/repos/SzachMaty-Company/Frontend/releases/latest",
+    "https://api.github.com/repos/SzachMaty-Company/ChatService/releases/latest"
+]
 IMAGE_DIR = "images/"
 TEMPLATE_PATH = "templ-docker-compose.yml"
 OUTPUT_PATH = "docker-compose.yml"
