@@ -4,6 +4,9 @@ networks:
   dev:
     driver: bridge
 
+volumes:
+  dp_keys:
+
 services:
   gateway:
     container_name:
@@ -20,6 +23,8 @@ services:
       - 5000:80
     networks:
       - dev
+    volumes:
+      - dp_keys:/root/.aspnet/DataProtection-Keys
     restart: 
       on-failure
     
