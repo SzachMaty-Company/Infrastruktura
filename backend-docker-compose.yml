@@ -1,0 +1,52 @@
+version: '3'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  gateway:
+    container_name:
+      gateway
+    depends_on: 
+      - chatservice
+      - user_data_service
+    build:
+      context: ..\AuthenticationGateway\AuthenticationGateway\AuthenticationGateway
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://*:80;"
+    ports:
+      - 5000:80
+    networks:
+      - dev
+    restart: 
+      on-failure
+    
+  chatservice:
+    container_name: 
+      chatservice
+    build:
+      context: ..\ChatService
+      dockerfile: Dockerfile
+    #ports:
+      #- 8080:8080
+    networks:
+      - dev
+    restart:
+      on-failure
+
+  user_data_service:
+    container_name:
+      user_data_service
+    build:
+      context: ..\UserDataService
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://*:80;"
+    #ports:
+      #- 5001:80
+    networks:
+      - dev
+    restart:
+      on-failure
