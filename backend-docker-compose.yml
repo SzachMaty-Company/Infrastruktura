@@ -30,7 +30,7 @@ services:
       - chatservice
       - user_data_service
     build:
-      context: ..\AuthenticationGateway\AuthenticationGateway\AuthenticationGateway
+      context: ../AuthenticationGateway/AuthenticationGateway/AuthenticationGateway
       dockerfile: Dockerfile
     environment:
       ASPNETCORE_URLS: "http://*:80;"
@@ -47,7 +47,7 @@ services:
     container_name: 
       chatservice
     build:
-      context: ..\ChatService
+      context: ../ChatService
       dockerfile: Dockerfile
     #ports:
       #- 8080:8080
@@ -60,7 +60,7 @@ services:
     container_name:
       user_data_service
     build:
-      context: ..\UserDataService
+      context: ../UserDataService
       dockerfile: Dockerfile
     environment:
       ASPNETCORE_URLS: "http://*:80;"
