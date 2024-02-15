@@ -8,6 +8,21 @@ volumes:
   dp_keys:
 
 services:
+  web:
+    container_name:
+      web
+    depends_on:
+      - gateway
+    build:
+      context: ../Frontend
+      dockerfile: Dockerfile
+    ports: 
+      - 3000:80
+    networks:
+      - dev
+    restart:
+      on-failure
+
   gateway:
     container_name:
       gateway
@@ -20,7 +35,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://*:80;"
     ports:
-      - 5000:80
+      - 8000:80
     networks:
       - dev
     volumes:
