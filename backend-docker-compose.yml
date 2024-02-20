@@ -66,6 +66,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8124:8124
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
     depends_on:
       - chatservice-db
     networks:
