@@ -43,18 +43,7 @@ services:
       - dp_keys:/root/.aspnet/DataProtection-Keys
     restart: 
       on-failure
-    
-  chatservice:
-    container_name: 
-      chatservice
-    build:
-      context: ../ChatService
-      dockerfile: Dockerfile
-    networks:
-      - dev
-    restart:
-      on-failure
-
+  
   user_data_service:
     container_name:
       user_data_service
@@ -81,3 +70,32 @@ services:
       - dev
     restart:
       on-failure
+
+  chatservice:
+    container_name: 
+      chatservice
+    build:
+      context: ../ChatService
+      dockerfile: Dockerfile
+    ports:
+      - 8124:8124
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+    depends_on:
+      - chatservice-db
+    networks:
+      - dev
+
+  chatservice-db:
+    image: postgres
+    container_name: chatservice-db
+    environment:
+      POSTGRES_PASSWORD: Password1!
+      POSTGRES_USER: dev
+    ports:
+      - 5432:5432
+    volumes:
+      - ../ChatService/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - dev
+
