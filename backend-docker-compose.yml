@@ -6,6 +6,7 @@ networks:
 
 volumes:
   dp_keys:
+  app_data:
 
 services:
   web:
@@ -49,8 +50,6 @@ services:
     build:
       context: ../ChatService
       dockerfile: Dockerfile
-    #ports:
-      #- 8080:8080
     networks:
       - dev
     restart:
@@ -63,9 +62,21 @@ services:
       context: ../UserDataService
       dockerfile: Dockerfile
     environment:
+      ConnectionStrings__Default: "Server=postgres;Database=UserDataService;Port=5432;User Id=postgres;Password=postgres;"
       ASPNETCORE_URLS: "http://*:80;"
-    #ports:
-      #- 5001:80
+    networks:
+      - dev
+    restart:
+      on-failure
+      
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=UserDataService
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - app_data:/var/lib/postgresql/data
     networks:
       - dev
     restart:
