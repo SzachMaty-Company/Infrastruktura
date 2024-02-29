@@ -41,8 +41,6 @@ services:
       - dev
     volumes:
       - dp_keys:/root/.aspnet/DataProtection-Keys
-    restart: 
-      on-failure
   
   user_data_service:
     container_name:
@@ -55,8 +53,6 @@ services:
       ASPNETCORE_URLS: "http://*:80;"
     networks:
       - dev
-    restart:
-      on-failure
       
   postgres:
     image: postgres:latest
@@ -80,7 +76,7 @@ services:
     ports:
       - 8124:8124
     environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
+      - "SPRING_PROFILES_ACTIVE=dev,swagger"
     depends_on:
       - chatservice-db
     networks:
