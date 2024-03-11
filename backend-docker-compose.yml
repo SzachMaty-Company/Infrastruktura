@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 
 networks:
   dev:
@@ -77,8 +77,8 @@ services:
     build:
       context: ../ChatService
       dockerfile: Dockerfile
-    ports:
-      - 8124:8124
+    expose:
+      - 8124
     environment:
       - "SPRING_PROFILES_ACTIVE=dev"
     depends_on:
@@ -92,10 +92,37 @@ services:
     environment:
       POSTGRES_PASSWORD: Password1!
       POSTGRES_USER: dev
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     volumes:
       - ../ChatService/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - dev
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server --requirepass redis-password
+    expose:
+      - 6379
+    networks:
+      - dev
+
+  game-logic-service:
+    container_name: game-logic-service
+    environment:
+      - REDIS_HOST_NAME=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis-password
+      - JWT_KEY=0u8feufbeufbefdwgbytactrvanipol]
+      - USER_SERVICE_URL=http://user-service:8000 #to be changed
+    build:
+      context: ../GameLogicService
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    expose:
+      - 8080
     networks:
       - dev
 
