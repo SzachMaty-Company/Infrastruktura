@@ -111,6 +111,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_PASSWORD=redis-password
       - JWT_KEY=0u8feufbeufbefdwgbytactrvanipol]
+      - AI_SERVICE_URL=http://minimal-python:8888
       - USER_SERVICE_URL=http://user-service:8000 #to be changed
     build:
       context: ../GameLogicService
@@ -121,4 +122,12 @@ services:
       - 8080
     networks:
       - dev
+
+  minimal-python:
+    container_name: minimal-python
+    build:
+      context: ../GameLogicService/AI
+      dockerfile: Dockerfile.python
+    expose:
+      - "8888"
 
