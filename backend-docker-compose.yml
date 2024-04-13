@@ -8,26 +8,24 @@ volumes:
   dp_keys:
   app_data:
 
+
 services:
   web:
-    container_name:
-      web
+    container_name: web
     depends_on:
       - gateway
     build:
       context: ../Frontend
       dockerfile: Dockerfile
-    ports: 
+    ports:
       - 3000:80
     networks:
       - dev
-    restart:
-      on-failure
+    restart: on-failure
 
   gateway:
-    container_name:
-      gateway
-    depends_on: 
+    container_name: gateway
+    depends_on:
       - chatservice
       - user_data_service
     build:
@@ -41,10 +39,9 @@ services:
       - dev
     volumes:
       - dp_keys:/root/.aspnet/DataProtection-Keys
-  
+
   user_data_service:
-    container_name:
-      user_data_service
+    container_name: user_data_service
     build:
       context: ../UserDataService
       dockerfile: Dockerfile
@@ -53,7 +50,7 @@ services:
       ASPNETCORE_URLS: "http://*:80;"
     networks:
       - dev
-      
+
   postgres:
     image: postgres:latest
     environment:
@@ -64,12 +61,10 @@ services:
       - app_data:/var/lib/postgresql/data
     networks:
       - dev
-    restart:
-      on-failure
+    restart: on-failure
 
   chatservice:
-    container_name: 
-      chatservice
+    container_name: chatservice
     build:
       context: ../ChatService
       dockerfile: Dockerfile
@@ -112,7 +107,8 @@ services:
       - REDIS_PASSWORD=redis-password
       - JWT_KEY=0u8feufbeufbefdwgbytactrvanipol]
       - AI_SERVICE_URL=http://minimal-python:8888
-      - USER_SERVICE_URL=http://user-service:8000 #to be changed
+      - USER_SERVICE_URL=http://user_data_service:80
+      - CHAT_SERVICE_URL=http://chatservice:8124
     build:
       context: ../GameLogicService
       dockerfile: Dockerfile
@@ -130,4 +126,3 @@ services:
       dockerfile: Dockerfile.python
     expose:
       - "8888"
-
