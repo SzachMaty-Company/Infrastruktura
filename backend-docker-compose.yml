@@ -114,6 +114,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - redis
+      - minimal-python
+      - chatservice
+      - user_data_service
     expose:
       - 8080
     networks:
@@ -122,7 +125,7 @@ services:
   minimal-python:
     container_name: minimal-python
     build:
-      context: ../GameLogicService/AI
+      context: ../AIService/AI
       dockerfile: Dockerfile.python
     expose:
       - "8888"
