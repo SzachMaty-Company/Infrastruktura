@@ -48,6 +48,8 @@ services:
     environment:
       ConnectionStrings__Default: "Server=postgres;Database=UserDataService;Port=5432;User Id=postgres;Password=postgres;"
       ASPNETCORE_URLS: "http://*:80;"
+    depends_on:
+      - postgres
     networks:
       - dev
 
@@ -128,4 +130,6 @@ services:
       context: ../AIService/AI
       dockerfile: Dockerfile.python
     expose:
-      - "8888"
+      - 8888
+    networks:
+      - dev
